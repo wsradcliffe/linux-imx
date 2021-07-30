@@ -210,3 +210,8 @@ dtb-$(CONFIG_ARCH_MXC) += imx8ulp-evk.dtb imx8ulp-evk-rk055hdmipi4m.dtb \
 
 dtb-$(CONFIG_ARCH_S32) += s32v234-evb.dtb \
 			  s32v234-sbc.dtb
+
+# supported overlay
+DTC_FLAGS_maaxboard-nano-base := -@
+dtb-$(CONFIG_ARCH_MXC) += maaxboard-nano-base.dtb
+subdir-$(CONFIG_ARCH_MXC) += overlays
