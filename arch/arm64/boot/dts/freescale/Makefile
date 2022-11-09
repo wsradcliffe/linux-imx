@@ -216,4 +216,4 @@ DTC_FLAGS_maaxboard-nano-base := -@
 DTC_FLAGS_maaxboard-base := -@
 dtb-$(CONFIG_ARCH_MXC) += maaxboard-nano-base.dtb
 dtb-$(CONFIG_ARCH_MXC) += maaxboard-base.dtb
-subdir-$(CONFIG_ARCH_MXC) += overlays
+#subdir-$(CONFIG_ARCH_MXC) += overlays
