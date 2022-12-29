@@ -524,6 +524,7 @@
 	assigned-clocks = <&clk IMX8MQ_CLK_UART2>;
 	assigned-clock-parents = <&clk IMX8MQ_CLK_25M>;
 	fsl,uart-has-rtscts;
+	rs485-rts-active-low;
 	linux,rs485-enabled-at-boot-time;
 	status = "okay";
 };
