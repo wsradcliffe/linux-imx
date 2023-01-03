@@ -26,7 +26,18 @@
 
 	memory@40000000 {
 		device_type = "memory";
-		reg = <0x00000000 0x40000000 0 0x80000000>;
+		reg = <0x00000000 0x40000000 0 0xc0000000>;
+	};
+
+	reserved-memory {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+                rpmsg_reserved: rpmsg@0xb8000000 {
+                        no-map;
+                        reg = <0 0xb8000000 0 0x400000>;
+                };
 	};
 
 	resmem: reserved-memory {
@@ -38,8 +49,8 @@
 		linux,cma {
 			compatible = "shared-dma-pool";
 			reusable;
-			size = <0 0x3c000000>;
-			alloc-ranges = <0 0x40000000 0 0x40000000>;
+			size = <0 0x38000000>;
+			alloc-ranges = <0 0x80000000 0 0x38000000>;
 			linux,cma-default;
 		};
 	};
@@ -291,6 +302,7 @@
 				MX8MQ_IOMUXC_UART2_RXD_UART2_DCE_RX	0x49
 				MX8MQ_IOMUXC_UART2_TXD_UART2_DCE_TX	0x49
 			        MX8MQ_IOMUXC_UART4_RXD_UART2_DCE_CTS_B	0x49
+			        MX8MQ_IOMUXC_UART4_TXD_UART2_DCE_RTS_B	0x49
 			>;
 		};
 
@@ -524,6 +536,7 @@
 	assigned-clocks = <&clk IMX8MQ_CLK_UART2>;
 	assigned-clock-parents = <&clk IMX8MQ_CLK_25M>;
 	fsl,uart-has-rtscts;
+	rs485-rts-active-low;
 	linux,rs485-enabled-at-boot-time;
 	status = "okay";
 };
@@ -550,8 +563,8 @@
 
 /* eMMC */
 &usdhc1 {
-//	assigned-clocks = <&clk IMX8MQ_CLK_USDHC1>;
-//	assigned-clock-rates = <400000000>;
+	assigned-clocks = <&clk IMX8MQ_CLK_USDHC1>;
+	assigned-clock-rates = <400000000>;
 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
 	pinctrl-0 = <&pinctrl_usdhc1>;
 	pinctrl-1 = <&pinctrl_usdhc1_100mhz>;
@@ -564,8 +577,8 @@
 
 /* Onboard SDIO WiFi */
 &usdhc2 {
-//	assigned-clocks = <&clk IMX8MQ_CLK_USDHC2>;
-//	assigned-clock-rates = <200000000>;
+	assigned-clocks = <&clk IMX8MQ_CLK_USDHC2>;
+	assigned-clock-rates = <200000000>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_usdhc2>;
 	bus-width = <4>;
@@ -601,6 +614,10 @@
 };
 
 &vpu {
+	status = "okay";
+};
+
+&vpu_v4l2 {
 	status = "okay";
 };
 
@@ -771,7 +788,7 @@
 	phy-handle = <&ethphy0>;
 	fsl,magic-packet;
 	phy-reset-gpios = <&gpio1 9 GPIO_ACTIVE_LOW>;
-	status = "disabled";
+	status = "okay";
 
 	mdio {
 		#address-cells = <1>;
@@ -864,6 +881,7 @@
 &hdmi {
 	compatible = "cdn,imx8mq-hdmi";
 	lane-mapping = <0xe4>;
+	hdcp-config = <0x3>;
 	status = "disabled";
 };
 
