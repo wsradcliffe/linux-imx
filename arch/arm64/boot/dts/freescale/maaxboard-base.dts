@@ -130,11 +130,6 @@
 		};
 	};
 
-	gpiomem {
-		compatible = "maaxboard,maaxboard-gpiomem";
-		status = "okay";
-	};
-
 	hdmi_audio: sound-hdmi {
 		compatible = "fsl,imx8mq-evk-cdnhdmi",
 				"fsl,imx-audio-cdnhdmi";
@@ -149,13 +144,6 @@
 				<48000>,
 				<96000>,
 				<192000>;
-	};
-
-	sound-hdmi-arc {
-		compatible = "fsl,imx-audio-spdif";
-		model = "imx-hdmi-arc";
-		spdif-controller = <&spdif2>;
-		spdif-in;
 	};
 
 	regulators {
@@ -592,8 +580,9 @@
 	pinctrl-1 = <&pinctrl_usdhc1_100mhz>;
 	pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
 	non-removable;
+	no-sd;
 	no-sdio;
-	bus-width = <4>;
+	bus-width = <8>;
 	status = "okay";
 };
 
@@ -896,65 +885,13 @@
 	status = "disabled";
 };
 
-&mipi_dsi {
-	status = "disabled";
-};
-
-&spdif2 {
-	assigned-clocks = <&clk IMX8MQ_CLK_SPDIF2>;
-	assigned-clock-parents = <&clk IMX8MQ_AUDIO_PLL1_OUT>;
-	assigned-clock-rates = <24576000>;
-	status = "okay";
-};
-
-
 &hdmi {
 	compatible = "cdn,imx8mq-hdmi";
 	lane-mapping = <0xe4>;
 	status = "disabled";
 };
 
-&lcdif {
-	status = "disabled";
-	max-memory-bandwidth = <221257728>; /* 720x1280-32@60.02 */
-
-	assigned-clocks = <&clk IMX8MQ_CLK_LCDIF_PIXEL>,
-			  <&clk IMX8MQ_VIDEO_PLL1_BYPASS>,
-			  <&clk IMX8MQ_VIDEO_PLL1_REF_SEL>,
-			  <&clk IMX8MQ_VIDEO_PLL1>;
-	assigned-clock-parents = <&clk IMX8MQ_VIDEO_PLL1_OUT>,
-				 <&clk IMX8MQ_VIDEO_PLL1>,
-				 <&clk IMX8MQ_CLK_27M>;
-	assigned-clock-rate = <126000000>, <0>, <0>, <1134000000>;
-};
-
-&dphy {
-	status = "okay";
-};
-
 &irqsteer {
 	status = "okay";
 };
 
-&csi1_bridge {
-	fsl,mipi-mode;
-	fsl,two-8bit-sensor-mode;
-	status = "disabled";
-
-	port {
-		csi1_ep: endpoint {
-			remote-endpoint = <&csi1_mipi_ep>;
-		};
-	};
-};
-
-&mipi_csi_1 {
-	#address-cells = <1>;
-	#size-cells = <0>;
-	status = "disabled";
-	port {
-		csi1_mipi_ep: endpoint@1 {
-			remote-endpoint = <&csi1_ep>;
-		};
-	};
-};
